@@ -1,6 +1,8 @@
 #!/bin/bash
 
-cd /home/brleite/projetos/IpNotifier/
+BASEDIR=$(dirname "$0")
+
+cd $BASEDIR/.. 
 export NODE_HOME=/opt/node14
 export PATH=$PATH:$NODE_HOME/bin
 npm start
