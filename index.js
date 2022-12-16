@@ -15,21 +15,30 @@ const fs = require('fs');
 
 
     try {
-      const currentIp = fs.readFileSync(currentIpFile, 'utf8');
-      console.log(`Current IP: ${currentIp}`)
-
       fetch(url, options)
         .then( res => res.text() )
         .then( data => {
-                 const novoIp = data;
-                 console.log(`Novo IP: ${novoIp}`);
+                console.log(data);
+
+                const novoIp = data;
+                const mensagem = `Novo IP: ${novoIp}`;
+                
+                console.log(mensagem);
                
-                 if (novoIp && currentIp && currentIp != novoIp) {
-                   utils.sendBotMessage(`Seu IP é: ${novoIp}`);
-                   fs.writeFileSync(currentIpFile, novoIp);
-                 }
-               }
-              ); 
+                if (fs.existsSync(currentIpFile)) {
+                  const currentIp = fs.readFileSync(currentIpFile, 'utf8');
+                  console.log(`IP Atual: ${currentIp}`)
+                 
+                  if (novoIp && currentIp && currentIp != novoIp) {
+                    utils.sendBotMessage(mensagem);
+                    fs.writeFileSync(currentIpFile, novoIp);
+                  }                   
+                } else {
+                  utils.sendBotMessage(mensagem)
+                  fs.writeFileSync(currentIpFile, novoIp);
+                }
+              }
+          ); 
 
     } catch (err) {
       console.error(err)
